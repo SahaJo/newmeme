@@ -4,11 +4,12 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Builder
 // ORM -> Java(다른언어) Object 테이블로 매핑해주는 기술
 @Entity	// User 클래스가 MySQL에 테이블이 생성이 된다.
+// @DynamicInsert // insert 시에 null 값을 제외한 값을 전송
 public class User {
 
 	@Id //Primary Key
@@ -37,8 +39,10 @@ public class User {
 	@Column(nullable = false, length = 50)
 	private String email;
 	
-	@ColumnDefault("'user'") 		// " '글자'	" ********************************
-	private String role; // Enum을 쓰는게 좋음 // 롤 admin, user, manager 권한 같은거 부여
+	
+//	@ColumnDefault("'user'") 		// " '글자'	" ********************************
+	@Enumerated(EnumType.STRING) // DB는 RoleType이라는게 없다 그래서 DB에 String이라고 알려주어야함
+	private RoleType role; // Enum을 쓰는게 좋음 // 롤 admin, user, manager 권한 같은거 부여
 									// 도메인 설정이 가능함(범위가 정해졌다)
 	
 	@CreationTimestamp // 시간 자동 입력
