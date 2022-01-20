@@ -25,7 +25,7 @@ spring:
     open-in-view: true
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl #Entity(테이블) 만들때 변수명 그대로 넣겠다
       use-new-id-generator-mappings: false
