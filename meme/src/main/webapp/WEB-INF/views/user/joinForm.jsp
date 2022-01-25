@@ -20,7 +20,7 @@
 	
 </div>
 
-<script src="/blog/js/user.js"></script> <!-- network  -->
+<script src="/js/user.js"></script> <!-- network  -->
 <%@ include file="../layout/footer.jsp"%>
 
 
