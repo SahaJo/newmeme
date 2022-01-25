@@ -5,9 +5,11 @@ let index = {
 			this.save();								// this를 바인딩 하기 위해서
 		});	
 		
+		/*
 		$("#btn-login").on("click", ()=>{	// function(){} ()=>{} 사용한 이유
 			this.login();								// this를 바인딩 하기 위해서
 		});		
+		*/
 		
 	},
 	
@@ -26,7 +28,7 @@ let index = {
 			$.ajax({
 				// 회원가입 수행 요청 (100초 가정)
 				type: "POST",		// restful
-				url: "/api/user",  // class path
+				url: "/auth/joinProc",  // class path
 				// data를 JSON으로 받겠다. (JSON문자열)  
 				data: JSON.stringify(data),	// http body 데이터  그래서 조건이 필요함
 				contentType: "application/json; charset=utf-8",	// body 데이터가 어떤타입인지 (MIME)
@@ -39,8 +41,8 @@ let index = {
 			}).fail(function(error){
 				alert(JSON.stringify(error));
 			});
-		}, // seve
-		
+		} // seve
+	/*	,
 		login: function(){
 		//	alert('user의 save함수 호출됨');
 			let data ={
@@ -66,6 +68,7 @@ let index = {
 				alert(JSON.stringify(error));
 			});
 		} // login
+		*/
 }
 
 index.init();

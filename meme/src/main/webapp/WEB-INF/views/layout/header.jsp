@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+<!-- security tag info? tag 사용  -->
 <sec:authorize access="isAuthenticated()">
 	<sec:authentication property="principal" var="principal"/>
 </sec:authorize>
@@ -29,8 +30,8 @@
 			<c:choose>
 				<c:when test="${empty principal}">
 					<ul class="navbar-nav">
-						<li class="nav-item"><a class="nav-link" href="/loginForm">Login</a></li>
-						<li class="nav-item"><a class="nav-link" href="/joinForm">Join</a></li>
+						<li class="nav-item"><a class="nav-link" href="/auth/loginForm">Login</a></li>
+						<li class="nav-item"><a class="nav-link" href="/auth/joinForm">Join</a></li>
 					</ul>
 				</c:when>
 				<c:otherwise>
