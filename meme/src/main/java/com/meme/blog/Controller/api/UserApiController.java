@@ -2,23 +2,39 @@ package com.meme.blog.Controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.meme.blog.config.auth.PrincipalDetail;
 import com.meme.blog.dto.ResponseDto;
-import com.meme.blog.model.RoleType;
+import com.meme.blog.model.Board;
 import com.meme.blog.model.User;
+import com.meme.blog.service.BoardService;
 import com.meme.blog.service.UserService;
 
+/**
+ * 	회원가입 컨트롤러
+ * @author saha-vfx
+ *
+ */
 @RestController // 데이터만 리턴할거임
 public class UserApiController {
 	
 	@Autowired
+	private BoardService boardService;
+	
+	@Autowired
 	private UserService userService;
 	
-
+	
+	@PostMapping("/api/board")
+	public ResponseDto<Integer> save(@RequestBody Board board, @AuthenticationPrincipal PrincipalDetail principal){
+		boardService.글쓰기(board, principal.getUser());
+		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+	}
+	
 	
 //	@Autowired
 //	private HttpSession session;
@@ -43,14 +59,7 @@ public class UserApiController {
 	} // save
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 	// 다른 방식으로 로그인할것 시큐리티를 사용함 
 	// 기본 로그인 방식
 //	@PostMapping("/api/user/login")													// HttpSession 세션 받기위해서 사용

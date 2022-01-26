@@ -19,6 +19,12 @@ import com.meme.blog.repository.UserRepository;
 //	 (2) 사람2 금액 update and commit
 // -- 한개 또는 다수의 서비스가 될 수 있음 여러개 중 한개의 서비스가 고장나면 롤백이 필요함 그래서 서비스가 필요함
 
+/**
+ *  트랜잭션 설정
+ *   ex) 암호 해쉬화
+ * @author saha-vfx
+ *
+ */
 @Service
 public class UserService {
 	
