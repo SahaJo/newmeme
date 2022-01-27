@@ -8,6 +8,10 @@ let index = {
 		$("#btn-delete").on("click", ()=>{	// function(){} ()=>{} 사용한 이유
 			this.deleteById();								// this를 바인딩 하기 위해서
 		});	
+		
+		$("#btn-update").on("click", ()=>{	// function(){} ()=>{} 사용한 이유
+			this.update();								// this를 바인딩 하기 위해서
+		});	
 	
 	},
 	
@@ -41,7 +45,7 @@ let index = {
 		} // seve
 		,
 		deleteById: function(){
-				var id = $("#id").text();
+				let id = $("#id").text();
 			$.ajax({
 				// 회원가입 수행 요청 (100초 가정)
 				type: "DELETE",		// restful
@@ -56,6 +60,30 @@ let index = {
 				alert(JSON.stringify(error));
 			});
 		} // delete
+		,
+		update: function(){
+			let id = $("#id").val();
+			
+			let data ={
+				title: $("#title").val(),	
+				content: $("#content").val()
+			};
+			console.log(data);
+			
+			$.ajax({
+				type: "PUT",		// restful
+				url: "/api/board/"+id,  // class path
+				data: JSON.stringify(data),	// http body 데이터  그래서 조건이 필요함
+				contentType: "application/json; charset=utf-8",	// body 데이터가 어떤타입인지 (MIME)
+				dataType:"json" 
+			}).done(function(resp){
+				alert("수정 완료.");
+				console.log(resp);
+				location.href= "/";		// 기본 패스
+			}).fail(function(error){
+				alert(JSON.stringify(error));
+			});
+		} //update
 }
 
 index.init();

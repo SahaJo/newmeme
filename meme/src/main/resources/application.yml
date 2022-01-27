@@ -29,7 +29,7 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl #Entity(테이블) 만들때 변수명 그대로 넣겠다
       use-new-id-generator-mappings: false
-    show_sql: true #show sql
+   # show_sql: true #show sql
     properties:
       hibernate:
         format_sql: true #To beautify or pretty print the SQL
