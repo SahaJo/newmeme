@@ -7,7 +7,7 @@
 			<div class="card-body">
 				<!--	BoardController class에 model에 담아보낸 값  -->
 				<h4 class="card-title">${board.title}</h4>
-				<a href="#" class="btn btn-primary"> 상세 보기</a>
+				<a href="/board/${board.id }" class="btn btn-primary"> 상세 보기</a>
 			</div>
 		</div>
 	</c:forEach>

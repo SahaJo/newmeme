@@ -2,16 +2,12 @@ package com.meme.blog.Controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.meme.blog.config.auth.PrincipalDetail;
 import com.meme.blog.dto.ResponseDto;
-import com.meme.blog.model.Board;
 import com.meme.blog.model.User;
-import com.meme.blog.service.BoardService;
 import com.meme.blog.service.UserService;
 
 /**
@@ -22,18 +18,9 @@ import com.meme.blog.service.UserService;
 @RestController // 데이터만 리턴할거임
 public class UserApiController {
 	
-	@Autowired
-	private BoardService boardService;
 	
 	@Autowired
 	private UserService userService;
-	
-	
-	@PostMapping("/api/board")
-	public ResponseDto<Integer> save(@RequestBody Board board, @AuthenticationPrincipal PrincipalDetail principal){
-		boardService.글쓰기(board, principal.getUser());
-		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
-	}
 	
 	
 //	@Autowired
@@ -55,7 +42,7 @@ public class UserApiController {
 		userService.회원가입(user);
 				
 //		return new ResponseDto<Integer>(HttpStatus.OK, result);
-		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); //자바오브젝트를 jSON으로 변환해서 리턴(Jackson)
 	} // save
 	
 	
