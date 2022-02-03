@@ -14,6 +14,6 @@ import com.meme.blog.model.Board;
 // @Repository 생략가능
 public interface BoardRepository extends JpaRepository<Board, Integer>{
  
-
+	;;
 	
 } // end interface
