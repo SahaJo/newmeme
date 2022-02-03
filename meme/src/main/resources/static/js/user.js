@@ -10,8 +10,10 @@ let index = {
 			this.login();								// this를 바인딩 하기 위해서
 		});		
 		*/
-		
-	},
+		$("#btn-update").on("click", ()=>{	// function(){} ()=>{} 사용한 이유
+			this.update();								// this를 바인딩 하기 위해서
+		});	
+	}, // init:function()
 	
 		save: function(){
 		//	alert('user의 save함수 호출됨');
@@ -42,9 +44,34 @@ let index = {
 				alert(JSON.stringify(error));
 			});
 		} // seve
-	/*	,
-		login: function(){
+		,
+		update: function(){
 		//	alert('user의 save함수 호출됨');
+			let data ={
+				id: $("#id").val(),
+				username: $("#username").val(),
+				password: $("#password").val(),
+				email: $("#email").val()	
+			};
+			console.log(data);
+			
+			$.ajax({
+				type: "PUT",		// restful
+				url: "/user",  // class path
+				data: JSON.stringify(data),	// http body 데이터  그래서 조건이 필요함
+				contentType: "application/json; charset=utf-8",	// body 데이터가 어떤타입인지 (MIME)
+				dataType:"json" 
+			}).done(function(resp){
+				alert("회원수정이 완료 되었습니다.");
+				console.log(resp);
+				location.href= "/";		// 기본 패스
+			}).fail(function(error){
+				alert(JSON.stringify(error));
+			});
+		} 
+	/*	,
+		login: function(){ // 로그인 security 없이 사용
+		//	alert('user의 login함수 호출됨');
 			let data ={
 				username: $("#username").val(),	
 				password: $("#password").val()
@@ -69,7 +96,7 @@ let index = {
 			});
 		} // login
 		*/
-}
+} // index
 
 index.init();
 

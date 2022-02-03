@@ -1,7 +1,10 @@
 package com.meme.blog.Controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.meme.blog.config.auth.PrincipalDetail;
 
 @Controller
 public class UserController {
@@ -22,5 +25,13 @@ public class UserController {
 	public String loginForm() {
 		return "user/loginForm";
 	} // joinForm
+	
+	// 회원정보 수정
+	@GetMapping("/user/updateForm")
+	public String updateForm(@AuthenticationPrincipal PrincipalDetail principal) {
+		//  updateForm(@AuthenticationPrincipal PrincipalDetail principal) 는 AuthenticationFilter를 거쳐서 
+		// usernamePassword Auth 토큰을 만듬 Auth manager가 객체를 만듬
+		return "user/updateForm";
+	} // updateForm
 	
 } // end class
