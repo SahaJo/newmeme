@@ -12,7 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.meme.blog.config.auth.PrincipalDetail;
+import com.meme.blog.model.KakaoProfile;
+import com.meme.blog.model.OAuthToken;
 
 @Controller
 public class UserController {
@@ -76,7 +81,56 @@ public class UserController {
 				,String.class				
 		);
 		
-		return "카카오 토큰 요청 완료: 토큰요청에 대한 응답 : " + response.getBody();
+		// Gson, Json Simple, ObjectMapper
+		ObjectMapper objectMapper = new ObjectMapper();
+		OAuthToken oauthToken = null;
+		try {
+			oauthToken = objectMapper.readValue(response.getBody(), OAuthToken.class);
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		} // try-catch
+		
+		System.out.println("카카오 엑세스 토큰 : " + oauthToken.getAccess_token());
+		System.out.println("==================================");
+		
+		RestTemplate rt2 = new RestTemplate();
+		
+		// HttpHeader 오브젝트생성
+		HttpHeaders headers2 = new HttpHeaders();
+		headers2.add("Authorization", "Bearer " +oauthToken.getAccess_token() );
+		headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+			
+		// headers 값을 지닌 엔티티가 됨 .exchange()함수를 갖기위해 엔티티 사용
+		// HttpHeader와 HttpBody를 하나의 오브젝트에 담기
+		HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest2 = 
+				new HttpEntity<>(headers2);
+		
+		// Http 요청하기 -Post방식 - response 변수의 응답 받음
+		ResponseEntity<String> response2 = rt2.exchange(
+				"https://kapi.kakao.com/v2/user/me"
+				, HttpMethod.POST
+				,kakaoProfileRequest2
+				,String.class				
+		);
+//		System.out.println("response2 : " + response2);
+		
+		ObjectMapper objectMapper2 = new ObjectMapper();
+		KakaoProfile kakaoProfile = null;
+		try {
+			kakaoProfile = objectMapper2.readValue(response2.getBody(), KakaoProfile.class);
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		} // try-catch
+		
+		System.out.println("카카오 아이디(번호) : " + kakaoProfile.getId());
+		System.out.println("카카오 이메일 : " + kakaoProfile.getKakao_account().getEmail());
+		
+		
+		return response2.getBody();
 		
 	} // kakaoCallback
 	
