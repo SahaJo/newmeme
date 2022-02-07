@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -54,6 +55,7 @@ public class Board {
 						// Reply 필드 위에있는 변수 명을 넣어 주면 됨 (fetch = FetchType.LAZY) @OneToMany 기본값	EAGER바꿈
 	@OneToMany(mappedBy = "board", fetch = FetchType.EAGER)	// 하나의 게시글에 여러개의 댓글이 달림   앞이 테이블 뒤가 가져오는거 (값을 가져오기 위해 사용)
 	@JsonIgnoreProperties({"board"}) //reple 안에서 board 호출이안됨 방법이 많음
+	@OrderBy("id desc")
 	private List<Reply> replys;						// mappedBy 연관관계의 주인이 아니다.(난 FK가 아니에요) DB에 칼럼을 만들지 마세요
 	
 	

@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.meme.blog.model.Board;
+import com.meme.blog.model.Reply;
 import com.meme.blog.model.User;
 import com.meme.blog.repository.BoardRepository;
+import com.meme.blog.repository.ReplyRepository;
 
 /**
  *  트랜잭션 설정
@@ -23,6 +25,9 @@ public class BoardService {
 	
 		@Autowired
 		private BoardRepository boardRepository;
+		
+		@Autowired
+		private ReplyRepository replyRepository;
 		
 		
 		@Transactional	// import org.springframework.transaction.annotation.Transactional;
@@ -63,5 +68,20 @@ public class BoardService {
 			// 해당 함수로 종료시 (트랜잭션이 Service가 종료 될 때) 트랜잭션이 종료됩니다.
 			// 이때 더티체킹 - 자동 업데이트가 됨 DB flush
 		} // 글수정하기
+
+		@Transactional
+		public void 댓글쓰기(User user, int boardId, Reply requestReply) {
+			
+			Board board =	boardRepository.findById(boardId)
+					.orElseThrow(()->{
+						return new IllegalArgumentException("댓글 쓰기 실패. : 게시글 아이디를 찾을 수 없습니다.");
+					});
+			
+			requestReply.setUser(user);
+			requestReply.setBoard(board);
+			
+			replyRepository.save(requestReply);
+				
+		} // 댓글쓰기
 		
 } // end class

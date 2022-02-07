@@ -13,6 +13,9 @@ let index = {
 			this.update();								// this를 바인딩 하기 위해서
 		});	
 	
+		$("#btn-reply-save").on("click", ()=>{	// function(){} ()=>{} 사용한 이유
+			this.replySave();								// this를 바인딩 하기 위해서
+		});	
 	},
 	
 		save: function(){
@@ -84,6 +87,29 @@ let index = {
 				alert(JSON.stringify(error));
 			});
 		} //update
+		,
+		replySave: function(){
+			let data ={
+				content: $("#reply-content").val()
+			};
+			
+			let boardId = $("#boardId").val();
+			console.log(boardId);
+			
+			$.ajax({
+				type: "POST",		// restful
+				url: `/api/board/${boardId}/reply`,  //  빽틱 String으로 값이 들어온다
+				data: JSON.stringify(data),	// http body 데이터  그래서 조건이 필요함
+				contentType: "application/json; charset=utf-8",	// body 데이터가 어떤타입인지 (MIME)
+				dataType:"json"  
+			}).done(function(resp){
+				alert("댓글 작성이 완료 되었습니다.");
+				console.log(resp);
+				location.href= `/board/${boardId}`;		// 기본 패스
+			}).fail(function(error){
+				alert(JSON.stringify(error));
+			});
+		} // replySeve
 }
 
 index.init();

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.meme.blog.config.auth.PrincipalDetail;
 import com.meme.blog.dto.ResponseDto;
 import com.meme.blog.model.Board;
+import com.meme.blog.model.Reply;
 import com.meme.blog.service.BoardService;
 
 /**
@@ -54,6 +55,17 @@ public class BoardApiController {
 	} // update
 	
 	
+	// 데이터를 받을 때 컨트롤러에서 DTO를 만들어서 받는게 좋다.
+	// DTO 사용하지 않은 이유는 
+	 
+	@PostMapping("/api/board/{boardId}/reply")
+	public  ResponseDto<Integer> replySave(
+			@PathVariable int boardId, @RequestBody Reply reply, @AuthenticationPrincipal PrincipalDetail principal) {
+		System.out.println("BoardApiController : 댓글쓰기 호출됨 ");
+
+		boardService.댓글쓰기(principal.getUser(), boardId, reply);
+		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+	} // save
 	
 	
 	// 다른 방식으로 로그인할것 시큐리티를 사용함 
