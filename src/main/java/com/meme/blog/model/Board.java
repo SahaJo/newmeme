@@ -14,8 +14,9 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,7 +53,8 @@ public class Board {
 //	private Reply reply; 1개만 들고 오면 안됨 몇 개일지 알수가 없음
 						// Reply 필드 위에있는 변수 명을 넣어 주면 됨 (fetch = FetchType.LAZY) @OneToMany 기본값	EAGER바꿈
 	@OneToMany(mappedBy = "board", fetch = FetchType.EAGER)	// 하나의 게시글에 여러개의 댓글이 달림   앞이 테이블 뒤가 가져오는거 (값을 가져오기 위해 사용)
-	private List<Reply> reply;						// mappedBy 연관관계의 주인이 아니다.(난 FK가 아니에요) DB에 칼럼을 만들지 마세요
+	@JsonIgnoreProperties({"board"}) //reple 안에서 board 호출이안됨 방법이 많음
+	private List<Reply> replys;						// mappedBy 연관관계의 주인이 아니다.(난 FK가 아니에요) DB에 칼럼을 만들지 마세요
 	
 	
 	@CreationTimestamp
