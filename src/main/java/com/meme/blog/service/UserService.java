@@ -2,10 +2,6 @@ package com.meme.blog.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,13 +72,30 @@ public class UserService {
 			User persistance = userRepository.findById(user.getId()).orElseThrow(()->{
 				return new IllegalArgumentException("회원찾기 실패");
 			});
-			String rawPassword = user.getPassword();
-			String encPassword = encoder.encode(rawPassword);
-			persistance.setPassword(encPassword);
-			persistance.setEmail(user.getEmail());
+			
+			// Validate 체크 => oauth 필드에 값이 없으면 수정 가능
+			if(persistance.getOauth() == null || persistance.getOauth().equals("")) {
+				String rawPassword = user.getPassword();
+				String encPassword = encoder.encode(rawPassword);
+				persistance.setPassword(encPassword);
+				persistance.setEmail(user.getEmail());
+			} // oauth 값이 존재하면 값을 수정할 수 없음
+			
+			
+			
 			// 회원수정 함수 종료시 = 서비스 종료 = 트랜잭션 종료 = commit이 자동으로 됩니다.
 			// 영속화된 persistance 객체의 변화가 감지되면 더티체킹이 되어 update문을 날려줌.
+			System.err.println("값이 수정되었습니다." + persistance.getEmail() + "\n pass : " + persistance.getPassword());
 			
 		} // 회원수정
+		
+		@Transactional(readOnly = true)	// import org.springframework.transaction.annotation.Transactional;
+		public User 회원찾기(String username) {
+																										// orElseGet() 값이없으면 빈객체 리턴해라
+			User user = userRepository.findByUsername(username).orElseGet(()->{
+				return new User();
+			});
+			return  user;
+		} // 회원가입
 		
 } // end class

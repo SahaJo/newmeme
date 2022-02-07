@@ -15,7 +15,7 @@
 		</div>
 	</form>
 	<button id="btn-update" class="btn btn-primary">수정 완료</button>
-	
+	<button class="btn btn-secondary" onclick="location.back()">돌아가기</button>
 </div>
  	
  	<script>

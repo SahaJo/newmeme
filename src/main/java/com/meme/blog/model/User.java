@@ -30,7 +30,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 프로젝트에서 연결된 DB의 넘버링 전략을 따라간다.
 	private int id; // 시퀀스, auto_increment
 	
-	@Column(nullable = false, length = 30, unique = true)	// 널포인트 안됨
+	@Column(nullable = false, length = 100, unique = true)	// 널포인트 안됨
 	private String username; //아이디
 	
 	@Column(nullable = false, length = 100)	/// hashcode (비밀번호 암호화)
@@ -39,6 +39,9 @@ public class User {
 	@Column(nullable = false, length = 50)
 	private String email;
 	
+	// kakalogin 체크
+	
+	private String oauth; // kakao, google
 	
 //	@ColumnDefault("'user'") 		// " '글자'	" ********************************
 	@Enumerated(EnumType.STRING) // DB는 RoleType이라는게 없다 그래서 DB에 String이라고 알려주어야함
