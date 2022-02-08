@@ -7,11 +7,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.meme.blog.dto.ReplySaveRequestDto;
 import com.meme.blog.model.Board;
 import com.meme.blog.model.Reply;
 import com.meme.blog.model.User;
 import com.meme.blog.repository.BoardRepository;
 import com.meme.blog.repository.ReplyRepository;
+import com.meme.blog.repository.UserRepository;
 
 /**
  *  트랜잭션 설정
@@ -69,19 +71,38 @@ public class BoardService {
 			// 이때 더티체킹 - 자동 업데이트가 됨 DB flush
 		} // 글수정하기
 
-		@Transactional
-		public void 댓글쓰기(User user, int boardId, Reply requestReply) {
-			
-			Board board =	boardRepository.findById(boardId)
-					.orElseThrow(()->{
-						return new IllegalArgumentException("댓글 쓰기 실패. : 게시글 아이디를 찾을 수 없습니다.");
-					});
-			
-			requestReply.setUser(user);
-			requestReply.setBoard(board);
-			
-			replyRepository.save(requestReply);
-				
+		@Transactional	//네이티브 쿼리 사용
+		public void 댓글쓰기(ReplySaveRequestDto replySaveRequestDto) {
+			int result = replyRepository.mSave(replySaveRequestDto.getUserId(),replySaveRequestDto.getBoardId(),replySaveRequestDto.getContent());
+			System.out.println(result);	// 오브젝트를 출력하게되면 자동으로 toString() 이 호출됨.
 		} // 댓글쓰기
+		
+		@Transactional
+		public void 댓글삭제(int replyId) {
+			replyRepository.deleteById(replyId);
+		} // 댓글삭제
+		
+//		@Transactional // dto 사용
+//		public void 댓글쓰기(ReplySaveRequestDto replySaveRequestDto) {
+//			
+//			User user =	userRepository.findById(replySaveRequestDto.getUserId())
+//					.orElseThrow(()->{
+//						return new IllegalArgumentException("댓글 쓰기 실패. : 유저 아이디를 찾을 수 없습니다.");
+//					}); // 영속화 완료
+//			
+//			Board board =	boardRepository.findById(replySaveRequestDto.getBoardId())
+//					.orElseThrow(()->{
+//						return new IllegalArgumentException("댓글 쓰기 실패. : 게시글 아이디를 찾을 수 없습니다.");
+//					}); // 영속화 완료
+//			
+//			Reply reply = Reply.builder()
+//					.user(user)
+//					.board(board)
+//					.content(replySaveRequestDto.getContent())
+//					.build();
+//			
+//			replyRepository.save(reply);
+//				
+//		} // 댓글쓰기
 		
 } // end class

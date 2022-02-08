@@ -90,26 +90,44 @@ let index = {
 		,
 		replySave: function(){
 			let data ={
+				userId: $("#userId").val(),
+				boardId: $("#boardId").val(),
 				content: $("#reply-content").val()
 			};
 			
-			let boardId = $("#boardId").val();
-			console.log(boardId);
+			console.log(data);
 			
 			$.ajax({
 				type: "POST",		// restful
-				url: `/api/board/${boardId}/reply`,  //  빽틱 String으로 값이 들어온다
+				url: `/api/board/${data.boardId}/reply`,  //  빽틱 String으로 값이 들어온다
 				data: JSON.stringify(data),	// http body 데이터  그래서 조건이 필요함
 				contentType: "application/json; charset=utf-8",	// body 데이터가 어떤타입인지 (MIME)
 				dataType:"json"  
 			}).done(function(resp){
 				alert("댓글 작성이 완료 되었습니다.");
 				console.log(resp);
-				location.href= `/board/${boardId}`;		// 기본 패스
+				location.href= `/board/${data.boardId}`;		// 기본 패스
 			}).fail(function(error){
 				alert(JSON.stringify(error));
 			});
 		} // replySeve
+		
+		,
+		replyDelete: function(boardId, replyId){
+			
+			$.ajax({
+				type: "DELETE",		// restful
+				url: `/api/board/${boardId}/reply/${replyId}`,  //  빽틱 String으로 값이 들어온다
+				/* data: , contentType: "application/json; charset=utf-8",*/	// 필요없음
+				dataType:"json"  
+			}).done(function(resp){
+				alert("댓글삭제 성공.");
+				console.log(resp);
+				location.href= `/board/${boardId}`;		// 기본 패스
+			}).fail(function(error){
+				alert(JSON.stringify(error));
+			});
+		} // replyDelete
 }
 
 index.init();

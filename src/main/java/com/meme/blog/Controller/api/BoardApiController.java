@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.meme.blog.config.auth.PrincipalDetail;
+import com.meme.blog.dto.ReplySaveRequestDto;
 import com.meme.blog.dto.ResponseDto;
 import com.meme.blog.model.Board;
-import com.meme.blog.model.Reply;
 import com.meme.blog.service.BoardService;
 
 /**
@@ -60,13 +60,17 @@ public class BoardApiController {
 	 
 	@PostMapping("/api/board/{boardId}/reply")
 	public  ResponseDto<Integer> replySave(
-			@PathVariable int boardId, @RequestBody Reply reply, @AuthenticationPrincipal PrincipalDetail principal) {
-		System.out.println("BoardApiController : 댓글쓰기 호출됨 ");
+			 @RequestBody ReplySaveRequestDto replySaveRequestDto) {
 
-		boardService.댓글쓰기(principal.getUser(), boardId, reply);
+		boardService.댓글쓰기(replySaveRequestDto);
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	} // save
 	
+	@DeleteMapping("/api/board/{boardId}/reply/{replyId}")
+	public ResponseDto<Integer> replyDelete(@PathVariable int replyId){
+		boardService.댓글삭제(replyId);
+		return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
+	} // replyDelete
 	
 	// 다른 방식으로 로그인할것 시큐리티를 사용함 
 	// 기본 로그인 방식

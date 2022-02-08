@@ -30,6 +30,7 @@
 	<!-- 댓글 구성 스트링부터 속성 class로 끌어다 사용중 -->
 	<div class="card">
 		<form >
+			<input type="hidden" id="userId" value="${principal.user.id }"/>
 			<input type="hidden" id="boardId" value="${board.id }"/>
 			<div class="card-body">
 				<textarea id="reply-content" rows="1" class="form-control" ></textarea>
@@ -45,11 +46,13 @@
 		<ul id="reply-box" class="list-group">
 			<c:forEach var="reply" items="${board.replys }" >
 			<!-- 내가 만든 아이디는 --두개사용하는게 좋음 -->
-			  <li id="reply--1" class="list-group-item d-flex justify-content-between">
+			  <li id="reply-${reply.id }" class="list-group-item d-flex justify-content-between">
 			  	<div>${reply.content }</div>
 			  	<div class="d-flex justify-content-right">
 			  		<div class="font-italic">작성자 : ${reply.user.username } &nbsp;</div>
-			  		<button class= "badge">삭제</button>
+			  		<c:if test="${reply.user.id == principal.user.id}" >
+				  		<button onClick="index.replyDelete(${board.id},${reply.id })" class= "badge">삭제</button>
+			  		</c:if>
 			  	</div>
 			  </li>
 			</c:forEach>
